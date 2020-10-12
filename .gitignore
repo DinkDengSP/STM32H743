@@ -50,3 +50,13 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+*.xcl
+*.ps1
+*.sim
+*.wsdt
+*.dnx
+*.crun
+*.dep
+*.dbgdt
+BoardArmfly/uCOSIII_App/Code/ProjectCollection/HardwareCheck/ProjectFiles/settings/HardwareCheck.Release.cspy.bat
+BoardArmfly/uCOSIII_App/Code/ProjectCollection/HardwareCheck/ProjectFiles/settings/HardwareCheck.Debug.cspy.bat

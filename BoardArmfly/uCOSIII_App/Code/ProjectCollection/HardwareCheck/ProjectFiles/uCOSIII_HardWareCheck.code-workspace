@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\DriverConfig"
+		},
+		{
+			"path": "..\\TaskMain"
+		},
+		{
+			"path": "..\\..\\..\\CommonFunc"
+		},
+		{
+			"path": "..\\..\\..\\CommonService"
+		},
+		{
+			"path": "..\\..\\..\\Driver"
+		},
+		{
+			"path": "..\\..\\..\\ThirdParty"
+		},
+		{
+			"path": "..\\..\\..\\uCOS_III"
+		}
+	],
+	"settings": {}
+}
