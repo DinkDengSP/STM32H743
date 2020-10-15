@@ -1,17 +1,15 @@
 /*******************************************************************
  *Description: Copyright(c) 2018-2090 DengXiaojun,All rights reserved.
  *Author: DengXiaoJun
- *Date: 2020-10-12 23:21:25
+ *Date: 2020-10-13 22:35:04
  *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-13 22:47:03
- *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverMCU\MCU_Inc.h
+ *LastEditTime: 2020-10-13 22:35:40
+ *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\AppSupport\AppTask\AppTaskConfig.h
  *ModifyRecord1:    
 ******************************************************************/
-#ifndef __MCU_INC_H_
-#define __MCU_INC_H_
+#ifndef __APP_TASK_CONFIG_H_
+#define __APP_TASK_CONFIG_H_
 
-#include "MCU_Port.h"
-#include "MCU_MPU.h"
 
 #endif
 

@@ -1146,6 +1146,21 @@
         <name>Driver</name>
         <group>
             <name>DriverBoard</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardExtPort.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardExtPort.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardInc.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardLed.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardLed.h</name>
+            </file>
         </group>
         <group>
             <name>DriverCore</name>
@@ -1980,6 +1995,24 @@
         </group>
         <group>
             <name>DriverMCU</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Common.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Inc.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_MPU.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_MPU.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Port.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Port.h</name>
+            </file>
         </group>
     </group>
     <group>
@@ -2012,6 +2045,24 @@
             </group>
             <group>
                 <name>OSConfig</name>
+                <file>
+                    <name>$PROJ_DIR$\..\DriverConfig\OSConfig\cpu_cfg.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\DriverConfig\OSConfig\lib_cfg.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\DriverConfig\OSConfig\os_app_hooks.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\DriverConfig\OSConfig\os_app_hooks.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\DriverConfig\OSConfig\os_cfg.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\DriverConfig\OSConfig\os_cfg_app.h</name>
+                </file>
             </group>
             <group>
                 <name>OtherConfig</name>
@@ -2041,6 +2092,9 @@
                 </group>
                 <group>
                     <name>AppTask</name>
+                    <file>
+                        <name>$PROJ_DIR$\..\TaskMain\AppSupport\AppTask\AppTaskConfig.h</name>
+                    </file>
                 </group>
                 <group>
                     <name>AppUtil</name>
@@ -2059,6 +2113,9 @@
                 </group>
                 <group>
                     <name>ComplexTask</name>
+                    <file>
+                        <name>$PROJ_DIR$\..\TaskMain\ComplexSupport\ComplexTask\ComplexTaskConfig.h</name>
+                    </file>
                 </group>
                 <group>
                     <name>ComplexUtil</name>
@@ -2077,6 +2134,12 @@
                 </group>
                 <group>
                     <name>ServiceTask</name>
+                    <file>
+                        <name>$PROJ_DIR$\..\TaskMain\ServiceSupport\ServiceTask\ServiceTaskConfig.h</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\TaskMain\ServiceSupport\ServiceTask\ServiceTaskHeart.c</name>
+                    </file>
                 </group>
                 <group>
                     <name>ServiceUtil</name>

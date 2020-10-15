@@ -105,7 +105,7 @@
 #define OS_CFG_TIME_DLY_HMSM_EN                    1u           /* Include code for OSTimeDlyHMSM()                                      */
 #define OS_CFG_TIME_DLY_RESUME_EN                  1u           /* Include code for OSTimeDlyResume()                                    */
 //定时器
-#define OS_CFG_TMR_EN                              1u           /* Enable (1) or Disable (0) code generation for TIMERS                  */
+#define OS_CFG_TMR_EN                              0u           /* Enable (1) or Disable (0) code generation for TIMERS                  */
 #define OS_CFG_TMR_DEL_EN                          1u           /* Enable (1) or Disable (0) code generation for OSTmrDel()              */
 //系统指令跟踪
 #define OS_CFG_TRACE_EN                            0u           /* Enable (1) or Disable (0) uC/OS-III Trace instrumentation             */

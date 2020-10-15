@@ -51,7 +51,7 @@
 //定时运行任务的堆栈
 #define  OS_CFG_TMR_TASK_STK_SIZE                           512u
 //定时运行任务的运行周期
-#define  OS_CFG_TMR_TASK_RATE_HZ                            100u
+#define  OS_CFG_TMR_TASK_RATE_HZ                            1u
 
 
 #endif

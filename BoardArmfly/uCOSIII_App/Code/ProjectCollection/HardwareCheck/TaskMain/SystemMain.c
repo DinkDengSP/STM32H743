@@ -1,10 +1,16 @@
-#include "stm32h7xx_hal.h"
+#include "SystemTaskConfig.h"
+#include "os_app_hooks.h"
 
 //板上时钟初始化申明
 void BoardSystemClockInit(void);
 
 int main(void)
 {
+     OS_ERR  os_err;
+    //MPU配置
+        MCU_MPU_ConfigInit();
+    //Cache使能
+        MCU_MPU_CacheEnable();
     //STM32H7xx HAL 库初始化，此时系统用的还是H7自带的64MHz，HSI时钟:
     //1. 调用函数HAL_InitTick，初始化滴答时钟中断1ms。
     //2. 设置NVIV优先级分组4
@@ -15,10 +21,42 @@ int main(void)
         BoardSystemClockInit();
     //初始化延时系统
         CoreDelayInit();
-    while(1)
-    {
-        asm("nop");
-    }
+    //关闭中断
+        CPU_IntDis(); 
+    //MCU内核模块初始化
+        CPU_Init();                                                 
+    //操作系统初始化
+        OSInit(&os_err); 
+    //初始化状态判定                                           
+        if (os_err != OS_ERR_NONE) {
+            while(1){asm("nop");}; 
+        }
+    //设置系统内置回调函数
+        App_OS_SetAllHooks();  
+    //创建开始任务
+        OSTaskCreate((OS_TCB *)&tcbTaskStart,                          //任务控制块
+                    (CPU_CHAR *)NAME_TASK_START,                       //任务名字
+                    (OS_TASK_PTR)TaskFuncStart,                        //任务函数
+                    (void *)0,                                         //传递给任务函数的参数
+                    (OS_PRIO)PRIO_TASK_START,                          //任务优先级
+                    (CPU_STK *)&stackBufferTaskStart[0],               //任务堆栈基地址
+                    (CPU_STK_SIZE)STK_SIZE_TASK_START / 10,            //任务堆栈深度限位
+                    (CPU_STK_SIZE)STK_SIZE_TASK_START,                 //任务堆栈大小
+                    (OS_MSG_QTY)0,                                     //任务内部消息队列能够接收的最大消息数目,为0时禁止接收消息
+                    (OS_TICK)0,                                        //当使能时间片轮转时的时间片长度，为0时为默认长度，
+                    (void *)0,                                         //用户补充的存储区
+                    (OS_OPT)OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR, //任务选项
+                    (OS_ERR *)&os_err);                                //存放该函数错误时的返回值
+    //任务必须创建成功
+        if (os_err != OS_ERR_NONE) {
+            while (1);
+        }   
+    //打开中断
+        CPU_IntEn();
+    //启动系统
+        OSStart(&os_err); 
+    //原则上永远不会运行到这里
+        while(1){asm("nop");}; 
 }
 
 
@@ -69,13 +107,13 @@ void BoardSystemClockInit(void)
 	//配置PLL锁相环的配置 
     //pllm:PLL1 预分频系数(进PLL 之前的分频),取值范围:2~63.  25/5=5M
         RCC_OscInitStruct.PLL.PLLM = 5;
-    //plln:PLL1 倍频系数(PLL 倍频),取值范围:4~512.  5*160 = 800M
-        RCC_OscInitStruct.PLL.PLLN = 160;
-    //pllp:PLL1 的p分频系数(PLL 之后的分频),分频后作为系统时钟,取值范围:2~128 800/2 = 400M
+    //plln:PLL1 倍频系数(PLL 倍频),取值范围:4~512.  5*192 = 960M
+        RCC_OscInitStruct.PLL.PLLN = 192;
+    //pllp:PLL1 的p分频系数(PLL 之后的分频),分频后作为系统时钟,取值范围:2~128 960/2 = 480M
         RCC_OscInitStruct.PLL.PLLP = 2;
-    //pllr:PLL1 的r分频系数(PLL 之后的分频),分频后作为系统时钟,取值范围:2~128 800/2 = 400M
+    //pllr:PLL1 的r分频系数(PLL 之后的分频),分频后作为系统时钟,取值范围:2~128 960/2 = 480M
         RCC_OscInitStruct.PLL.PLLR = 2;
-    //pllq:PLL1 的q 分频系数(PLL 之后的分频),取值范围:1~128. 800/4 = 200M
+    //pllq:PLL1 的q 分频系数(PLL 之后的分频),取值范围:1~128. 960/4 = 240M
         RCC_OscInitStruct.PLL.PLLQ = 4;		
 	//开始初始化PLL锁相环
     //设置调压器输出电压级别,级别数值越小工作频率越高，所以如果我们要配置 H7 的主频为 400MHz，那么我们必须
@@ -95,13 +133,13 @@ void BoardSystemClockInit(void)
     //配置RCC_CLOCKTYPE_D1PCLK1时钟，对应APB3总线
     //配置RCC_CLOCKTYPE_D3PCLK1时钟，对应APB4总线  
 	    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_D1PCLK1 | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2  | RCC_CLOCKTYPE_D3PCLK1);
-    //系统时钟就是锁相环时钟 400MHZ
+    //系统时钟就是锁相环时钟 480MHZ
 	    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
 	    RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
-    //HCLK为系统时钟2分频 200MHZ
+    //HCLK为系统时钟2分频 240MHZ
 	    RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
-    //APB1 2 3 4均从AHB二分瓶 100MHZ
-    //定时器的时钟都是在D2域进行控制，而且当 D2PPRE1或 D2PPRE2 的分频系数不为1的时候，定时器的时钟频率为rcc_pclk1或rcc_pclk2的2倍,也就是200MHZ定时器
+    //APB1 2 3 4均从AHB二分瓶 120MHZ
+    //定时器的时钟都是在D2域进行控制，而且当 D2PPRE1或 D2PPRE2 的分频系数不为1的时候，定时器的时钟频率为rcc_pclk1或rcc_pclk2的2倍,也就是240MHZ定时器
         RCC_ClkInitStruct.APB3CLKDivider = RCC_APB3_DIV2;  
         RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV2; 
         RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV2; 
