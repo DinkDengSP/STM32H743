@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-13 22:29:49
 **LastEditors: DengXiaoJun
-**LastEditTime: 2020-10-15 23:53:58
+**LastEditTime: 2020-10-16 23:53:30
 **FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverBoard\BoardExtPort.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -14,11 +14,11 @@
 #define  EXT_PORT	 *(uint32_t *)0x60001000
 //定义扩展IO的状态,保存扩展IO状态
 static volatile uint32_t extPortState;	
+//端口互斥信号量
+static OS_MUTEX mutexBoardExtPort;
 
 //配置FMC响应的管脚为复用功能
-/*
-	安富莱STM32-H7开发板接线方法：4片74HC574挂在FMC 32位总线上。1个地址端口可以扩展出32个IO
-*/	
+//安富莱STM32-H7开发板接线方法：4片74HC574挂在FMC 32位总线上。1个地址端口可以扩展出32个IO
 static void BoardExtPort_GPIO_Config(void)
 {
 	/* 使能FMC时钟 */
@@ -142,55 +142,85 @@ static void BoardExtPort_FMC_Config(void)
 
 
 
+
+//外部扩展端口初始化
 void BoardExtPort_Init(void)
 {
+	OS_ERR err;
     //先初始化IO口
     BoardExtPort_GPIO_Config();
     //后初始化FMC
     BoardExtPort_FMC_Config();
     /* 将开发板一些片选，LED口设置为高 */
-	extPortState = (BOARD_EXT_PORT_PIN_NRF24L01_CE | BOARD_EXT_PORT_PIN_VS1053_XDCS);
-	EXT_PORT = extPortState;	/* 写硬件端口，更改IO状态 */
+	extPortState = (uint32_t)(BOARD_EXT_PORT_PIN_NRF24L01_CE | BOARD_EXT_PORT_PIN_VS1053_XDCS);
+	/* 写硬件端口，更改IO状态 */
+	EXT_PORT = extPortState;	
+	//初始化互斥信号量
+	OSMutexCreate((OS_MUTEX*	)&mutexBoardExtPort,
+				  (CPU_CHAR*	)"mutexBoardExtPort",
+                  (OS_ERR*		)&err);
 }
 
 //扩展IO设置指定IO口
-void BoardExtPort_SetPin(uint32_t pin, uint8_t value)
+void BoardExtPort_SetPin(BOARD_EXT_PORT_INDEX pin, BitAction value)
 {
-    if (value == 0)
+	OS_ERR err;
+	//申请互斥信号量
+	if (OSRunning)OSMutexPend(&mutexBoardExtPort, 0, OS_OPT_PEND_BLOCKING, 0, &err);
+	//数据转换
+    if (value == Bit_RESET)
 	{
-		extPortState &= (~pin);
+		extPortState &= (~((uint32_t)pin));
 	}
 	else
 	{
-		extPortState |= pin;
+		extPortState |= ((uint32_t)pin);
 	}
+	//写入端口
 	EXT_PORT = extPortState;
+	//释放互斥信号量
+	if (OSRunning)OSMutexPost(&mutexBoardExtPort, OS_OPT_POST_FIFO, &err);
 }
 
 //扩展IO读取指定IO口状态
-uint8_t BoardExtPort_GetPin(uint32_t pin)
+BitAction BoardExtPort_GetPin(BOARD_EXT_PORT_INDEX pin)
 {
-    if (extPortState & pin)
+	BitAction result;
+	OS_ERR err;
+	//申请互斥信号量
+	if (OSRunning)OSMutexPend(&mutexBoardExtPort, 0, OS_OPT_PEND_BLOCKING, 0, &err);
+	//数据读取并转换
+    if (extPortState & ((uint32_t)pin))
 	{
-		return 1;
+		result = Bit_SET;
 	}
 	else
 	{
-		return 0;
+		result = Bit_RESET;
 	}
+	//释放互斥信号量
+	if (OSRunning)OSMutexPost(&mutexBoardExtPort, OS_OPT_POST_FIFO, &err);
+	return result;
 }
 
 //扩展IO翻转IO口状态
-void BoardExtPort_TooglePin(uint32_t pin)
+void BoardExtPort_TooglePin(BOARD_EXT_PORT_INDEX pin)
 {
-    if (extPortState & pin)
+	OS_ERR err;
+	//申请互斥信号量
+	if (OSRunning)OSMutexPend(&mutexBoardExtPort, 0, OS_OPT_PEND_BLOCKING, 0, &err);
+	//数据设置
+    if (extPortState & ((uint32_t)pin))
 	{
-		extPortState &= (~pin);
+		extPortState &= (~((uint32_t)pin));
 	}
 	else
 	{
-		extPortState |= pin;
+		extPortState |= ((uint32_t)pin);
 	}
+	//数据写入
 	EXT_PORT = extPortState;
+	//释放互斥信号量
+	if (OSRunning)OSMutexPost(&mutexBoardExtPort, OS_OPT_POST_FIFO, &err);
 }
 

@@ -25,5 +25,10 @@
 			"path": "..\\..\\..\\uCOS_III"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"BoardBH1750.C": "cpp",
+			"BoardMPU6050.C": "cpp"
+		}
+	}
 }

@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-11 22:36:02
 **LastEditors: DengXiaoJun
-**LastEditTime: 2020-10-16 00:00:37
+**LastEditTime: 2020-10-17 23:45:51
 **FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\SystemTaskStart.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -82,11 +82,40 @@ void TaskFuncStart(void *p_arg)
 }
 
 
+void MCU_WWDG_CallBack()
+{
+    BoardLedToogle(BOARD_LED1_REMOTE);
+}
+
 //板上外设初始化
 void BoardDeviceInit(void)
 {
     //初始化外部IO口
         BoardExtPort_Init();
+    //随机数初始化
+        MCU_RandomInit();
     //初始化LED系统
-        BoardLedInit(BOARD_LED1|BOARD_LED2|BOARD_LED3|BOARD_LED4,BOARD_LED_OFF);
+        BoardLedInit(BOARD_LED1_REMOTE,BOARD_LED_ON);
+        BoardLedInit(BOARD_LED2_NRF24L01,BOARD_LED_ON);
+        BoardLedInit(BOARD_LED3_W25Q128,BOARD_LED_ON);
+        BoardLedInit(BOARD_LED4_DHT11,BOARD_LED_ON);
+    //芯片电子签名初始化
+        MCU_UNIQUE_ID localUniqueID = {0};
+        MCU_UniqueID_Read(&localUniqueID);
+        //打印信息
+        SEGGER_RTT_printf(0," idSn0 = 0X%08X\r\n idSn1 = 0X%08X\r\n idSn2 = 0X%08X\r\n flashSizeID = 0X%08X\r\n",
+                            localUniqueID.idSn0,localUniqueID.idSn1,localUniqueID.idSn2,localUniqueID.flashSizeID);
+
+    
+    //等待开机指示,留一个时间让出现可以观察到的重复初始化现象
+        CoreDelayMs(200);
+    //关闭全部LED灯
+        BoardLedSet(BOARD_LED1_REMOTE,BOARD_LED_OFF);
+        BoardLedSet(BOARD_LED2_NRF24L01,BOARD_LED_OFF);
+        BoardLedSet(BOARD_LED3_W25Q128,BOARD_LED_OFF);
+        BoardLedSet(BOARD_LED4_DHT11,BOARD_LED_OFF);
+    //芯片启动正式任务
+        SEGGER_RTT_printf(0,"System App Start\r\n");  
+    //窗口看门狗
+        MCU_WWDG_Init(127,80,WWDG_PRESCALER_8,MCU_WWDG_CallBack); 
 }

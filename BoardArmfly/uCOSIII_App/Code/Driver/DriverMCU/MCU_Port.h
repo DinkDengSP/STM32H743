@@ -3,14 +3,13 @@
  *Author: DengXiaoJun
  *Date: 2020-10-12 23:20:33
  *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-15 23:46:43
+ *LastEditTime: 2020-10-16 22:53:58
  *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverMCU\MCU_Port.h
  *ModifyRecord1:    
 ******************************************************************/
 #ifndef __MCU_PORT_H_
 #define __MCU_PORT_H_
 #include "MCU_Common.h"
-
 
 //老版本到新版本的转换,习惯用BitAction了
 typedef enum BitAction

@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-13 22:43:17
 **LastEditors: DengXiaoJun
-**LastEditTime: 2020-10-16 00:01:27
+**LastEditTime: 2020-10-17 23:28:25
 **FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\ServiceSupport\ServiceTask\ServiceTaskHeart.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -25,7 +25,7 @@ void ServiceTaskFuncHeart(void *p_arg)
     p_arg = p_arg;
     while(1)
     {
-        BoardLedToogle(BOARD_LED1);
+        BoardLedToogle(BOARD_LED3_W25Q128);
         CoreDelayMs(250);
     }
 }

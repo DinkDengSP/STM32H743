@@ -21,6 +21,12 @@ int main(void)
         BoardSystemClockInit();
     //初始化延时系统
         CoreDelayInit();
+    //配置调试库RTT
+        //配置RTT调试端口
+        /* 配置通道0，上行配置*/
+        SEGGER_RTT_ConfigUpBuffer(0, "RTTUP", NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
+        /* 配置通道0，下行配置*/	
+        SEGGER_RTT_ConfigDownBuffer(0, "RTTDOWN", NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
     //关闭中断
         CPU_IntDis(); 
     //MCU内核模块初始化

@@ -2330,6 +2330,24 @@
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Port.h</name>
             </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Random.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Random.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_UniqueID.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_UniqueID.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_WDG.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_WDG.h</name>
+            </file>
         </group>
     </group>
     <group>
@@ -2477,6 +2495,21 @@
         <name>ThirdParty</name>
         <group>
             <name>bget</name>
+        </group>
+        <group>
+            <name>RTT</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\ThirdParty\RTT\SEGGER_RTT.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\ThirdParty\RTT\SEGGER_RTT.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\ThirdParty\RTT\SEGGER_RTT_Conf.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\ThirdParty\RTT\SEGGER_RTT_printf.c</name>
+            </file>
         </group>
         <group>
             <name>STemWin</name>
