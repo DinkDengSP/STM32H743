@@ -3,7 +3,7 @@
  *Author: DengXiaoJun
  *Date: 2020-10-13 22:29:30
  *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-18 19:55:20
+ *LastEditTime: 2020-10-18 23:39:16
  *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverBoard\BoardInc.h
  *ModifyRecord1:    
 ******************************************************************/
@@ -15,6 +15,9 @@
 #include "BoardBeep.h"
 #include "BoardW25Q256.h"
 #include "BoardW25Q64.h"
+#include "BoardSDRAM.h"
+#include "BoardSD.h"
+#include "BoardJoysTick.h"
 
 #endif
 

@@ -3,7 +3,7 @@
  *Author: DengXiaoJun
  *Date: 2020-10-12 23:21:25
  *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-18 19:36:48
+ *LastEditTime: 2020-10-18 23:59:46
  *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverMCU\MCU_Inc.h
  *ModifyRecord1:    
 ******************************************************************/
@@ -21,6 +21,8 @@
 
 //变参宏定义,RS2,调试printf
 #define SystemPrintf(format,args...)            MCU_Uart1Printf(format,##args)	
+
+//#define SystemPrintf(format,args...)          SEGGER_RTT_printf(0,format,##args)
 
 #endif
 

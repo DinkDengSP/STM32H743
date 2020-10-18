@@ -1482,10 +1482,28 @@
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardIntMasterDMA.c</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardJoysTick.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardJoysTick.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardLed.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardLed.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardSD.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardSD.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardSDRAM.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardSDRAM.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardW25Q256.c</name>
@@ -2444,7 +2462,7 @@
             <group>
                 <name>UserConfig</name>
                 <file>
-                    <name>$PROJ_DIR$\..\DriverConfig\UserConfig\UserMemManageConfig.h</name>
+                    <name>$PROJ_DIR$\..\DriverConfig\UserConfig\MemManageConfig.h</name>
                 </file>
             </group>
         </group>
@@ -2531,6 +2549,12 @@
         <name>ThirdParty</name>
         <group>
             <name>bget</name>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\ThirdParty\bget\bget.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\ThirdParty\bget\bget.h</name>
+            </file>
         </group>
         <group>
             <name>RTT</name>

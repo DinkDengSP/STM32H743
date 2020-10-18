@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-13 22:29:49
 **LastEditors: DengXiaoJun
-**LastEditTime: 2020-10-16 23:53:30
+**LastEditTime: 2020-10-18 20:50:43
 **FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverBoard\BoardExtPort.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -108,7 +108,7 @@ static void BoardExtPort_FMC_Config(void)
 	//设置类型
         hsram.Instance  = FMC_NORSRAM_DEVICE;
         hsram.Extended  = FMC_NORSRAM_EXTENDED_DEVICE;
-    /* FMC使用的HCLK3，主频200MHz，1个FMC时钟周期就是5ns */
+    /* FMC使用的HCLK3，主频240MHz，1个FMC时钟周期就是5ns */
 	/* SRAM 总线时序配置 4-1-2-1-2-2 不稳定，5-2-2-1-2-2 稳定 */  
     //时序配置
         SRAM_Timing.AddressSetupTime       = 5;  /* 5*5ns=25ns，地址建立时间，范围0 -15个FMC时钟周期个数 */

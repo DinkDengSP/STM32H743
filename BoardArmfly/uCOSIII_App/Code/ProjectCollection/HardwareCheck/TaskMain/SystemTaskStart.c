@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-11 22:36:02
 **LastEditors: DengXiaoJun
-**LastEditTime: 2020-10-18 19:56:59
+**LastEditTime: 2020-10-18 23:59:09
 **FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\SystemTaskStart.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -82,9 +82,25 @@ void TaskFuncStart(void *p_arg)
 }
 
 
-void MCU_WWDG_CallBack()
+void JoysTickEnterCallBack(void)
 {
-    BoardLedToogle(BOARD_LED1_REMOTE);
+    SystemPrintf("JoysTickEnterCallBack\r\n");
+}
+void JoysTickLeftCallBack(void)
+{
+    SystemPrintf("JoysTickLeftCallBack\r\n");
+}
+void JoysTickRightCallBack(void)
+{
+    SystemPrintf("JoysTickRightCallBack\r\n");
+}
+void JoysTickUpCallBack(void)
+{
+    SystemPrintf("JoysTickUpCallBack\r\n");
+}
+void JoysTickDownCallBack(void)
+{
+    SystemPrintf("JoysTickDownCallBack\r\n");
 }
 
 //板上外设初始化
@@ -107,9 +123,6 @@ void BoardDeviceInit(void)
     //芯片电子签名初始化
         MCU_UNIQUE_ID localUniqueID = {0};
         MCU_UniqueID_Read(&localUniqueID);
-        //打印信息
-        SEGGER_RTT_printf(0," idSn0 = 0X%08X\r\n idSn1 = 0X%08X\r\n idSn2 = 0X%08X\r\n flashSizeID = 0X%08X\r\n",
-                            localUniqueID.idSn0,localUniqueID.idSn1,localUniqueID.idSn2,localUniqueID.flashSizeID);
         SystemPrintf(" idSn0 = 0X%08X\r\n idSn1 = 0X%08X\r\n idSn2 = 0X%08X\r\n flashSizeID = 0X%08X\r\n",
                             localUniqueID.idSn0,localUniqueID.idSn1,localUniqueID.idSn2,localUniqueID.flashSizeID);
     //W25Q256初始化
@@ -147,7 +160,56 @@ void BoardDeviceInit(void)
                 BoardLedToogle(BOARD_LED1_REMOTE);
             }
         } while (errorCode != D_ERR_NONE);
-        
+    //SDRAM初始化
+        BoardSDRAM_Init();
+    //SDRAM自检
+        do
+        {
+            errorCode = BoardSDRAM_SelfCheck();
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardSDRAM_SelfCheck Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
+    //内存管理初始化
+        UserMemInit(MEM_DTCM);
+        UserMemInit(MEM_AXI_SRAM);
+        UserMemInit(MEM_D2_SRAM1);
+        UserMemInit(MEM_D2_SRAM2);
+        UserMemInit(MEM_D3_SRAM4);
+        UserMemInit(MEM_SDRAM);
+    //SD卡初始化
+        do
+        {
+            errorCode = BoardSD_Init();
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardSD_Init Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
+    //显示SD卡信息
+        BoardSD_PrintfCardMsg();
+    //SD卡读写自检
+        do
+        {
+            errorCode = BoardSD_Check();
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardSD_Check Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
+    //JoysTick初始化
+        BoardJoysTickIntInit(JOYS_TICK_ENTER,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickEnterCallBack);
+        BoardJoysTickIntInit(JOYS_TICK_LEFT,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickLeftCallBack);
+        BoardJoysTickIntInit(JOYS_TICK_RIGHT,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickRightCallBack);
+        BoardJoysTickIntInit(JOYS_TICK_UP,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickUpCallBack);
+        BoardJoysTickIntInit(JOYS_TICK_DOWN,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickDownCallBack);
 
     
     //蜂鸣器提示一下

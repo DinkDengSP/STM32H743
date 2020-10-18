@@ -3,7 +3,7 @@
  *Author: DengXiaoJun
  *Date: 2020-10-12 23:20:33
  *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-16 22:53:58
+ *LastEditTime: 2020-10-18 23:51:46
  *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverMCU\MCU_Port.h
  *ModifyRecord1:    
 ******************************************************************/
@@ -17,6 +17,13 @@ typedef enum BitAction
   Bit_RESET = GPIO_PIN_RESET,
   Bit_SET   = GPIO_PIN_SET,
 }BitAction;
+
+//外部传感器的状态,无效还是有效,不区分电平
+typedef enum SENSOR_STATE
+{
+    SENSOR_STATE_INVALID = 0,
+    SENSOR_STATE_VALID = 1,
+}SENSOR_STATE;
 
 //mcu支持的引脚数量
 typedef enum MCU_PIN
