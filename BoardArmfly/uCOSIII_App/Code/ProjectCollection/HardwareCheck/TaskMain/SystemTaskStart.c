@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-11 22:36:02
 **LastEditors: DengXiaoJun
-**LastEditTime: 2020-10-17 23:45:51
+**LastEditTime: 2020-10-18 19:56:59
 **FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\SystemTaskStart.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -90,6 +90,7 @@ void MCU_WWDG_CallBack()
 //板上外设初始化
 void BoardDeviceInit(void)
 {
+    D_ERR errorCode = D_ERR_NONE;
     //初始化外部IO口
         BoardExtPort_Init();
     //随机数初始化
@@ -99,23 +100,67 @@ void BoardDeviceInit(void)
         BoardLedInit(BOARD_LED2_NRF24L01,BOARD_LED_ON);
         BoardLedInit(BOARD_LED3_W25Q128,BOARD_LED_ON);
         BoardLedInit(BOARD_LED4_DHT11,BOARD_LED_ON);
+    //初始化Beep
+        BoardBeepInit(BEEP_OFF);
+    //系统串口初始化
+        MCU_Uart1Init(115200,MCU_UART_LENGTH_8B,MCU_UART_STOPBIT1,MCU_UART_CHECK_MODE_NONE,MCU_UART_HARD_CONTROL_NONE,NULL);
     //芯片电子签名初始化
         MCU_UNIQUE_ID localUniqueID = {0};
         MCU_UniqueID_Read(&localUniqueID);
         //打印信息
         SEGGER_RTT_printf(0," idSn0 = 0X%08X\r\n idSn1 = 0X%08X\r\n idSn2 = 0X%08X\r\n flashSizeID = 0X%08X\r\n",
                             localUniqueID.idSn0,localUniqueID.idSn1,localUniqueID.idSn2,localUniqueID.flashSizeID);
+        SystemPrintf(" idSn0 = 0X%08X\r\n idSn1 = 0X%08X\r\n idSn2 = 0X%08X\r\n flashSizeID = 0X%08X\r\n",
+                            localUniqueID.idSn0,localUniqueID.idSn1,localUniqueID.idSn2,localUniqueID.flashSizeID);
+    //W25Q256初始化
+        do
+        {
+            errorCode = BoardW25Q256_Init();
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardW25Q256_Init Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
+    //W25Q256自检
+        do
+        {
+            errorCode = BoardW25Q256_Check();
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardW25Q256_Check Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
+    //W25Q64初始化
+        BoardW25Q64_Init();
+    //W25Q64自检
+        do
+        {
+            errorCode = BoardW25Q64_Check();
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardW25Q64_Check Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
+        
 
     
+    //蜂鸣器提示一下
+        BoardBeepSetState(BEEP_ON);
     //等待开机指示,留一个时间让出现可以观察到的重复初始化现象
         CoreDelayMs(200);
+    //蜂鸣器关闭
+        BoardBeepSetState(BEEP_OFF);
     //关闭全部LED灯
         BoardLedSet(BOARD_LED1_REMOTE,BOARD_LED_OFF);
         BoardLedSet(BOARD_LED2_NRF24L01,BOARD_LED_OFF);
         BoardLedSet(BOARD_LED3_W25Q128,BOARD_LED_OFF);
         BoardLedSet(BOARD_LED4_DHT11,BOARD_LED_OFF);
     //芯片启动正式任务
-        SEGGER_RTT_printf(0,"System App Start\r\n");  
-    //窗口看门狗
-        MCU_WWDG_Init(127,80,WWDG_PRESCALER_8,MCU_WWDG_CallBack); 
+        SystemPrintf("System App Start\r\n");  
 }

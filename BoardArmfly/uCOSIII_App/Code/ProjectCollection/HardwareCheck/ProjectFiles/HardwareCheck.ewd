@@ -733,7 +733,7 @@
                 <debug>0</debug>
                 <option>
                     <name>JLinkSpeed</name>
-                    <state>15000</state>
+                    <state>4000</state>
                 </option>
                 <option>
                     <name>CCJLinkDoLogfile</name>

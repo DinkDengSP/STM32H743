@@ -23,6 +23,7 @@ int main(void)
         CoreDelayInit();
     //配置调试库RTT
         //配置RTT调试端口
+        SEGGER_RTT_Init();
         /* 配置通道0，上行配置*/
         SEGGER_RTT_ConfigUpBuffer(0, "RTTUP", NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
         /* 配置通道0，下行配置*/	

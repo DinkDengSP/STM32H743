@@ -3,12 +3,12 @@
  *Author: DengXiaoJun
  *Date: 2020-10-17 00:28:18
  *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-17 23:01:17
+ *LastEditTime: 2020-10-18 14:57:55
  *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverMCU\MCU_Random.h
  *ModifyRecord1:    
 ******************************************************************/
-#ifndef __MCU_WDG_H_
-#define __MCU_WDG_H_
+#ifndef __MCU_RANDOM_H_
+#define __MCU_RANDOM_H_
 #include "MCU_Common.h"
 
 

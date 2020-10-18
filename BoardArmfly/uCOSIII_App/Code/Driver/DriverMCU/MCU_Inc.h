@@ -3,7 +3,7 @@
  *Author: DengXiaoJun
  *Date: 2020-10-12 23:21:25
  *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-17 23:20:07
+ *LastEditTime: 2020-10-18 19:36:48
  *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverMCU\MCU_Inc.h
  *ModifyRecord1:    
 ******************************************************************/
@@ -15,6 +15,12 @@
 #include "MCU_UniqueID.h"
 #include "MCU_Random.h"
 #include "MCU_WDG.h"
+#include "MCU_Uart.h"
+#include "MCU_SPI.h"
+
+
+//变参宏定义,RS2,调试printf
+#define SystemPrintf(format,args...)            MCU_Uart1Printf(format,##args)	
 
 #endif
 

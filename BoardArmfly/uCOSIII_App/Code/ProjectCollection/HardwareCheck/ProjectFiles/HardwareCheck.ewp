@@ -1109,10 +1109,10 @@
         <group>
             <name>ADT</name>
             <file>
-                <name>$PROJ_DIR$\..\..\..\CommonFunc\ADT\ADT_Base.c</name>
+                <name>$PROJ_DIR$\..\..\..\CommonFunc\ADT\ADT_CircleByteQueue.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\CommonFunc\ADT\ADT_Base.h</name>
+                <name>$PROJ_DIR$\..\..\..\CommonFunc\ADT\ADT_CircleByteQueue.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\CommonFunc\ADT\ADT_Inc.h</name>
@@ -1148,6 +1148,12 @@
         <group>
             <name>DriverBoard</name>
             <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardBeep.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardBeep.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardExtPort.c</name>
             </file>
             <file>
@@ -1157,10 +1163,25 @@
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardInc.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardIntMasterDMA.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardLed.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardLed.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardW25Q256.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardW25Q256.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardW25Q64.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardW25Q64.h</name>
             </file>
         </group>
         <group>
@@ -2019,6 +2040,21 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Random.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_SPI.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_SPI.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Uart.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Uart1.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_UartInt.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_UniqueID.c</name>
