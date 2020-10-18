@@ -1470,6 +1470,12 @@
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardBeep.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardButton.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardButton.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardExtPort.c</name>
             </file>
             <file>

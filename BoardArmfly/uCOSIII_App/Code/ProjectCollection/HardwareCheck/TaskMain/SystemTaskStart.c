@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-11 22:36:02
 **LastEditors: DengXiaoJun
-**LastEditTime: 2020-10-18 23:59:09
+**LastEditTime: 2020-10-19 00:11:02
 **FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\SystemTaskStart.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -82,26 +82,21 @@ void TaskFuncStart(void *p_arg)
 }
 
 
-void JoysTickEnterCallBack(void)
+void BoardButtonK1_CallBack()
 {
-    SystemPrintf("JoysTickEnterCallBack\r\n");
+    SystemPrintf("BoardButtonK1_CallBack\r\n");
 }
-void JoysTickLeftCallBack(void)
+
+void BoardButtonK2_CallBack()
 {
-    SystemPrintf("JoysTickLeftCallBack\r\n");
+    SystemPrintf("BoardButtonK2_CallBack\r\n");
 }
-void JoysTickRightCallBack(void)
+
+void BoardButtonK3_CallBack()
 {
-    SystemPrintf("JoysTickRightCallBack\r\n");
+    SystemPrintf("BoardButtonK3_CallBack\r\n");
 }
-void JoysTickUpCallBack(void)
-{
-    SystemPrintf("JoysTickUpCallBack\r\n");
-}
-void JoysTickDownCallBack(void)
-{
-    SystemPrintf("JoysTickDownCallBack\r\n");
-}
+
 
 //板上外设初始化
 void BoardDeviceInit(void)
@@ -205,11 +200,15 @@ void BoardDeviceInit(void)
             }
         } while (errorCode != D_ERR_NONE);
     //JoysTick初始化
-        BoardJoysTickIntInit(JOYS_TICK_ENTER,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickEnterCallBack);
-        BoardJoysTickIntInit(JOYS_TICK_LEFT,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickLeftCallBack);
-        BoardJoysTickIntInit(JOYS_TICK_RIGHT,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickRightCallBack);
-        BoardJoysTickIntInit(JOYS_TICK_UP,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickUpCallBack);
-        BoardJoysTickIntInit(JOYS_TICK_DOWN,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,JoysTickDownCallBack);
+        BoardJoysTickIntInit(JOYS_TICK_ENTER,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
+        BoardJoysTickIntInit(JOYS_TICK_LEFT,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
+        BoardJoysTickIntInit(JOYS_TICK_RIGHT,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
+        BoardJoysTickIntInit(JOYS_TICK_UP,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
+        BoardJoysTickIntInit(JOYS_TICK_DOWN,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
+    //独立按键初始化
+        BoardButtonIntInit(BUTTON_K1,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,BoardButtonK1_CallBack);
+        BoardButtonIntInit(BUTTON_K2,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,BoardButtonK2_CallBack);
+        BoardButtonIntInit(BUTTON_K3,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,BoardButtonK3_CallBack);
 
     
     //蜂鸣器提示一下
