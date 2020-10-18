@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-11 22:36:02
 **LastEditors: DengXiaoJun
-**LastEditTime: 2020-10-19 00:11:02
+**LastEditTime: 2020-10-19 01:11:32
 **FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\SystemTaskStart.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -80,23 +80,6 @@ void TaskFuncStart(void *p_arg)
     //删除start_task任务自身
         OSTaskDel((OS_TCB *)0, &os_err);
 }
-
-
-void BoardButtonK1_CallBack()
-{
-    SystemPrintf("BoardButtonK1_CallBack\r\n");
-}
-
-void BoardButtonK2_CallBack()
-{
-    SystemPrintf("BoardButtonK2_CallBack\r\n");
-}
-
-void BoardButtonK3_CallBack()
-{
-    SystemPrintf("BoardButtonK3_CallBack\r\n");
-}
-
 
 //板上外设初始化
 void BoardDeviceInit(void)
@@ -206,9 +189,31 @@ void BoardDeviceInit(void)
         BoardJoysTickIntInit(JOYS_TICK_UP,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
         BoardJoysTickIntInit(JOYS_TICK_DOWN,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
     //独立按键初始化
-        BoardButtonIntInit(BUTTON_K1,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,BoardButtonK1_CallBack);
-        BoardButtonIntInit(BUTTON_K2,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,BoardButtonK2_CallBack);
-        BoardButtonIntInit(BUTTON_K3,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,BoardButtonK3_CallBack);
+        BoardButtonIntInit(BUTTON_K1,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
+        BoardButtonIntInit(BUTTON_K2,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
+        BoardButtonIntInit(BUTTON_K3,BOARD_KEY_PREE_PRI,BOARD_KEY_SUB_PRI,NULL);
+    //AT24CXX初始化
+        do
+        {
+            errorCode = BoardAT24CXX_Init();
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardAT24CXX_Init Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
+    //AT24CXX自检
+        do
+        {
+            errorCode = BoardAT24CXX_Check();
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardAT24CXX_Check Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
 
     
     //蜂鸣器提示一下

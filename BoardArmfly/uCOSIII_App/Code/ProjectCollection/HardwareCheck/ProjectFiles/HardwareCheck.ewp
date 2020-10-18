@@ -1148,6 +1148,12 @@
         <group>
             <name>DriverBoard</name>
             <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardAT24CXX.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardAT24CXX.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardBeep.c</name>
             </file>
             <file>
@@ -2043,6 +2049,12 @@
             <name>DriverMCU</name>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Common.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_IIC.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_IIC.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverMCU\MCU_Inc.h</name>
