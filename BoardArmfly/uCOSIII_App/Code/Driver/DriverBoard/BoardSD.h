@@ -2,9 +2,9 @@
  *Description: Copyright(c) 2018-2090 DengXiaojun,All rights reserved.
  *Author: DengXiaoJun
  *Date: 2020-10-17 00:29:47
- *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-18 23:05:13
- *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverBoard\BoardSD.h
+ *LastEditors: ,: DengXiaoJun
+ *LastEditTime: ,: 2020-10-19 23:19:08
+ *FilePath: ,: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverBoard\BoardSD.h
  *ModifyRecord1:    
 ******************************************************************/
 #ifndef __BOARD_SD_H_
@@ -44,12 +44,6 @@ D_ERR BoardSD_ReadBlocks(uint8_t* pData, uint32_t ReadAddr, uint32_t NumOfBlocks
 
 //写入指定块
 D_ERR BoardSD_WriteBlocks(uint8_t* pData, uint32_t WriteAddr, uint32_t NumOfBlocks);
-
-//读取指定块
-D_ERR BoardSD_ReadBlocksDMA(uint8_t* pData, uint32_t ReadAddr, uint32_t NumOfBlocks);
-
-//写入指定块
-D_ERR BoardSD_WriteBlocksDMA(uint8_t* pData, uint32_t WriteAddr, uint32_t NumOfBlocks);
 
 //擦除指定地址
 D_ERR BoardSD_Erase(uint32_t StartAddr, uint32_t EndAddr);

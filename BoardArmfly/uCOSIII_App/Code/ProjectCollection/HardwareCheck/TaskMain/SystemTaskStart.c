@@ -2,9 +2,9 @@
 **Description: Copyright(c) 2018-2090 DengXiaojun,All rights reserved.
 **Author: DengXiaoJun
 **Date: 2020-10-11 22:36:02
-**LastEditors: DengXiaoJun
-**LastEditTime: 2020-10-19 01:11:32
-**FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\SystemTaskStart.c
+**LastEditors: ,: DengXiaoJun
+**LastEditTime: ,: 2020-10-19 23:46:49
+**FilePath: ,: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\SystemTaskStart.c
 **ModifyRecord1:    
 ******************************************************************/
 #include "SystemTaskConfig.h"
@@ -214,6 +214,30 @@ void BoardDeviceInit(void)
                 BoardLedToogle(BOARD_LED1_REMOTE);
             }
         } while (errorCode != D_ERR_NONE);
+    //MPU6050初始化
+        BoardMPU6050_Init();
+        do
+        {
+            errorCode = BoardMPU6050_ConfigAndCheck();
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardMPU6050_ConfigAndCheck Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
+    //启动DMP姿态计算功能
+        uint8_t dmpResult;
+        do
+        {
+            dmpResult = mpu_dmp_init();
+            if(dmpResult != 0)
+            {
+                BoardLedToogle(BOARD_LED1_REMOTE);
+                SystemPrintf("mpu_dmp_init Failed,ErrorCode = 0X%08X\r\n",dmpResult);
+                CoreDelayMs(500);
+            }
+        } while (dmpResult != 0);
 
     
     //蜂鸣器提示一下

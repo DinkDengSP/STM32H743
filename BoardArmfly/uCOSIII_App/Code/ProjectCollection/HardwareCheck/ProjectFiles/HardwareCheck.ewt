@@ -1463,6 +1463,27 @@
         <name>Driver</name>
         <group>
             <name>DriverBoard</name>
+            <group>
+                <name>eMPL</name>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\MPU6050_eMPL\dmpKey.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\MPU6050_eMPL\dmpmap.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\MPU6050_eMPL\inv_mpu.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\MPU6050_eMPL\inv_mpu.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\MPU6050_eMPL\inv_mpu_dmp_motion_driver.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\MPU6050_eMPL\inv_mpu_dmp_motion_driver.h</name>
+                </file>
+            </group>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardAT24CXX.c</name>
             </file>
@@ -1504,6 +1525,15 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardLed.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardMPU6050.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardMPU6050.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardMPU6050Config.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardSD.c</name>

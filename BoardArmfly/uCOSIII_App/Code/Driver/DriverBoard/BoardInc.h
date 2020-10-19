@@ -2,9 +2,9 @@
  *Description: Copyright(c) 2018-2090 DengXiaojun,All rights reserved.
  *Author: DengXiaoJun
  *Date: 2020-10-13 22:29:30
- *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-19 00:48:56
- *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverBoard\BoardInc.h
+ *LastEditors: ,: DengXiaoJun
+ *LastEditTime: ,: 2020-10-19 23:45:19
+ *FilePath: ,: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverBoard\BoardInc.h
  *ModifyRecord1:    
 ******************************************************************/
 #ifndef __BOARD_INC_H_
@@ -20,6 +20,8 @@
 #include "BoardJoysTick.h"
 #include "BoardButton.h"
 #include "BoardAT24CXX.h"
+#include "BoardMPU6050.h"
+#include "inv_mpu.h"
 
 #endif
 

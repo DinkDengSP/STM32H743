@@ -3,7 +3,7 @@
  *Author: DengXiaoJun
  *Date: 2020-10-12 23:16:00
  *LastEditors: DengXiaoJun
- *LastEditTime: 2020-10-19 01:08:09
+ *LastEditTime: 2020-10-19 01:27:47
  *FilePath: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\CommonFunc\SystemUtil\ErrorCode.h
  *ModifyRecord1:    
 ******************************************************************/
@@ -37,6 +37,7 @@ typedef enum  D_ERR
     D_ERR_BOARD_MAIN_COMM_IIC_ACK_TIMEOUT                      = 0XD0000011,//IIC ACK超时
     D_ERR_BOARD_MAIN_COMM_IIC_ADDR_LIMIT                       = 0XD0000012,//IIC ADDR超过限制
     D_ERR_BOARD_MAIN_COMM_AT24CXX_CHECK                        = 0XD0000013,//AT24CXX检查失败
+    D_ERR_BOARD_MAIN_COMM_MPU_6050_CHECK                       = 0XD0000014,//AT24CXX检查失败
 }D_ERR;
 
 //转换HAL库错误

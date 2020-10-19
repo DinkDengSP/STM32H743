@@ -89,6 +89,12 @@ D_ERR BoardSD_Init(void)
         {
             return ErrorConvertHAL(halState);
         }
+    //更新卡模式
+        halState = HAL_SD_ConfigWideBusOperation(&uSdHandle,uSdHandle.Init.BusWide);
+        if(halState != HAL_OK)
+        {
+            return ErrorConvertHAL(halState);
+        }
     //更新SD卡相关讯息
         errorCode = BoardSD_GetCardInfo(&currentSDCardInfo);
     //完成
@@ -202,15 +208,43 @@ D_ERR BoardSD_Check(void)
 //读取指定块
 D_ERR BoardSD_ReadBlocks(uint8_t* pData, uint32_t ReadAddr, uint32_t NumOfBlocks)
 {
+    D_ERR errorCode = D_ERR_NONE;
     HAL_StatusTypeDef halState;
+    uint32_t timeCount = 0;
     OS_ERR err;
     //申请互斥信号量
 	    if (OSRunning)OSMutexPend(&mutexBoardSD, 0, OS_OPT_PEND_BLOCKING, 0, &err);
+    //读取标志设为0
+        readTransOverFlag = 0;
     //读取数据
-        halState = HAL_SD_ReadBlocks(&uSdHandle, (uint8_t *)pData, ReadAddr, NumOfBlocks, BOARD_SD_TIME_OUT);
+        halState = HAL_SD_ReadBlocks_IT(&uSdHandle, (uint8_t *)pData, ReadAddr, NumOfBlocks);
         if(halState != HAL_OK)
         {
+            //释放互斥信号量
+	        if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
             return ErrorConvertHAL(halState);
+        }
+    //等待标志位切换
+        do
+        {
+            if(readTransOverFlag == 1)break;
+            CoreDelayMinTick();
+            timeCount++;
+        } while (timeCount < BOARD_SD_TIME_OUT);
+    //计时时间超时
+        if(timeCount >= BOARD_SD_TIME_OUT)
+        {
+            //释放互斥信号量
+	        if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
+            return D_ERR_BOARD_MAIN_COMM_HAL_TIMEOUT;
+        }
+    //等待SD卡状态正常
+        errorCode = BoardSD_WaitStateNormal();
+        if(errorCode != D_ERR_NONE)
+        {
+            //释放互斥信号量
+	        if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
+            return errorCode;
         }
     //释放互斥信号量
 	    if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
@@ -221,90 +255,44 @@ D_ERR BoardSD_ReadBlocks(uint8_t* pData, uint32_t ReadAddr, uint32_t NumOfBlocks
 //写入指定块
 D_ERR BoardSD_WriteBlocks(uint8_t* pData, uint32_t WriteAddr, uint32_t NumOfBlocks)
 {
-    HAL_StatusTypeDef halState;
-    OS_ERR err;
-    //申请互斥信号量
-	    if (OSRunning)OSMutexPend(&mutexBoardSD, 0, OS_OPT_PEND_BLOCKING, 0, &err);
-    //写入数据
-        halState = HAL_SD_WriteBlocks(&uSdHandle, (uint8_t *)pData, WriteAddr, NumOfBlocks, BOARD_SD_TIME_OUT);
-        if(halState != HAL_OK)
-        {
-            return ErrorConvertHAL(halState);
-        }
-    //释放互斥信号量
-	    if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
-    //完成
-        return D_ERR_NONE;
-}
-
-//读取指定块
-D_ERR BoardSD_ReadBlocksDMA(uint8_t* pData, uint32_t ReadAddr, uint32_t NumOfBlocks)
-{
-    HAL_StatusTypeDef halState;
-    OS_ERR err;
-    readTransOverFlag = 0;
-    uint32_t timeCount = 0;
-    //申请互斥信号量
-	    if (OSRunning)OSMutexPend(&mutexBoardSD, 0, OS_OPT_PEND_BLOCKING, 0, &err);
-    //读取数据
-        halState = HAL_SD_ReadBlocks_DMA(&uSdHandle, (uint8_t *)pData, ReadAddr, NumOfBlocks);
-        if(halState != HAL_OK)
-        {
-            return ErrorConvertHAL(halState);
-        }
-    //等待标志位传输完成
-        do
-        {
-            //等待标志位变化
-            if(readTransOverFlag == 1)break;
-            //滴答延时
-            CoreDelayMinTick();
-            //计时增长
-            timeCount++;
-        } while (timeCount <= NumOfBlocks*1000);
-    //释放互斥信号量
-	    if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
-    //超时
-        if(timeCount > NumOfBlocks*1000)
-        {
-            return D_ERR_BOARD_MAIN_COMM_HAL_TIMEOUT;
-        }
-    //完成
-        return D_ERR_NONE;
-}
-
-//写入指定块
-D_ERR BoardSD_WriteBlocksDMA(uint8_t* pData, uint32_t WriteAddr, uint32_t NumOfBlocks)
-{
+    D_ERR errorCode = D_ERR_NONE;
     HAL_StatusTypeDef halState;
     OS_ERR err;
     uint32_t timeCount = 0;
-    writeTransOverFlag = 0;
     //申请互斥信号量
 	    if (OSRunning)OSMutexPend(&mutexBoardSD, 0, OS_OPT_PEND_BLOCKING, 0, &err);
+    //设置标志位为0
+        writeTransOverFlag = 0;
     //写入数据
-        halState = HAL_SD_WriteBlocks_DMA(&uSdHandle, (uint8_t *)pData, WriteAddr, NumOfBlocks);
+        halState = HAL_SD_WriteBlocks_IT(&uSdHandle, (uint8_t *)pData, WriteAddr, NumOfBlocks);
         if(halState != HAL_OK)
         {
             return ErrorConvertHAL(halState);
         }
-    //等待标志位传输完成
+    //等待标志位切换
         do
         {
-            //等待标志位变化
             if(writeTransOverFlag == 1)break;
-            //滴答延时
             CoreDelayMinTick();
-            //计时增长
             timeCount++;
-        } while (timeCount <= NumOfBlocks*1000);
-    //释放互斥信号量
-	    if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
-    //超时
-        if(timeCount > NumOfBlocks*1000)
+        } while (timeCount < BOARD_SD_TIME_OUT);
+    //计时时间超时
+        if(timeCount >= BOARD_SD_TIME_OUT)
         {
+            //释放互斥信号量
+	        if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
             return D_ERR_BOARD_MAIN_COMM_HAL_TIMEOUT;
         }
+    //等待SD卡状态正常
+        errorCode = BoardSD_WaitStateNormal();
+        if(errorCode != D_ERR_NONE)
+        {
+            //释放互斥信号量
+	        if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
+            return errorCode;
+        }
+    //释放互斥信号量
+	    if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
     //完成
         return D_ERR_NONE;
 }
@@ -320,6 +308,8 @@ D_ERR BoardSD_Erase(uint32_t StartAddr, uint32_t EndAddr)
         halState = HAL_SD_Erase(&uSdHandle, StartAddr, EndAddr);
         if(halState != HAL_OK)
         {
+            //释放互斥信号量
+	        if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
             return ErrorConvertHAL(halState);
         }
     //释放互斥信号量
@@ -331,7 +321,16 @@ D_ERR BoardSD_Erase(uint32_t StartAddr, uint32_t EndAddr)
 //获取内存卡状态
 SD_TRANS_STATE BoardSD_GetCardState(void)
 {
-    return((HAL_SD_GetCardState(&uSdHandle) == HAL_SD_CARD_TRANSFER ) ? SD_TRANS_STATE_IDLE:SD_TRANS_STATE_BUSY);
+    SD_TRANS_STATE transState;
+    OS_ERR err;
+    //申请互斥信号量
+	    if (OSRunning)OSMutexPend(&mutexBoardSD, 0, OS_OPT_PEND_BLOCKING, 0, &err);
+    //获取状态
+        transState = ((HAL_SD_GetCardState(&uSdHandle) == HAL_SD_CARD_TRANSFER ) ? SD_TRANS_STATE_IDLE:SD_TRANS_STATE_BUSY);
+    //释放互斥信号量
+	    if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
+    //完成
+        return transState;
 }
 
 //等待内存卡模块状态正常
@@ -343,8 +342,8 @@ D_ERR BoardSD_WaitStateNormal(void)
         if(SD_TRANS_STATE_IDLE == BoardSD_GetCardState())break;
         timeOut++;
         CoreDelayMinTick();
-    }while(timeOut < 1000);
-    if(timeOut >= 1000)
+    }while(timeOut < BOARD_SD_TIME_OUT);
+    if(timeOut >= BOARD_SD_TIME_OUT)
     {
         return D_ERR_BOARD_MAIN_COMM_HAL_TIMEOUT;
     }
@@ -355,12 +354,19 @@ D_ERR BoardSD_WaitStateNormal(void)
 D_ERR BoardSD_GetCardInfo(HAL_SD_CardInfoTypeDef *CardInfo)
 {
     HAL_StatusTypeDef halState;
+    OS_ERR err;
+    //申请互斥信号量
+	    if (OSRunning)OSMutexPend(&mutexBoardSD, 0, OS_OPT_PEND_BLOCKING, 0, &err);
     //获取卡讯息
         halState = HAL_SD_GetCardInfo(&uSdHandle, CardInfo);
         if(halState != HAL_OK)
         {
+            //释放互斥信号量
+	        if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
             return ErrorConvertHAL(halState);
         }
+    //释放互斥信号量
+	    if (OSRunning)OSMutexPost(&mutexBoardSD, OS_OPT_POST_FIFO, &err);
     //完成
         return D_ERR_NONE;
 }
