@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-11 22:36:02
 **LastEditors: ,: DengXiaoJun
-**LastEditTime: ,: 2020-10-19 23:46:49
+**LastEditTime: ,: 2020-10-20 21:11:44
 **FilePath: ,: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\SystemTaskStart.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -238,6 +238,19 @@ void BoardDeviceInit(void)
                 CoreDelayMs(500);
             }
         } while (dmpResult != 0);
+    //bmp180初始化
+        do
+        {
+            errorCode = BoardBmp180Init(0);
+            if(errorCode != D_ERR_NONE)
+            {
+                SystemPrintf("BoardBmp180Init Failed,ErrorCode : 0X%08X\r\n",errorCode);
+                CoreDelayMs(500);
+                BoardLedToogle(BOARD_LED1_REMOTE);
+            }
+        } while (errorCode != D_ERR_NONE);
+        //检查数据状态
+        
 
     
     //蜂鸣器提示一下

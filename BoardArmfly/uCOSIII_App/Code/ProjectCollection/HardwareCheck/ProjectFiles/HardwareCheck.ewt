@@ -1497,6 +1497,12 @@
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardBeep.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardBMP180.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardBMP180.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\..\..\Driver\DriverBoard\BoardButton.c</name>
             </file>
             <file>

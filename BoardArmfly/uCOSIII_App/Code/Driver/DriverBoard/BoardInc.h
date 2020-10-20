@@ -3,7 +3,7 @@
  *Author: DengXiaoJun
  *Date: 2020-10-13 22:29:30
  *LastEditors: ,: DengXiaoJun
- *LastEditTime: ,: 2020-10-19 23:45:19
+ *LastEditTime: ,: 2020-10-20 21:10:53
  *FilePath: ,: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\Driver\DriverBoard\BoardInc.h
  *ModifyRecord1:    
 ******************************************************************/
@@ -22,6 +22,7 @@
 #include "BoardAT24CXX.h"
 #include "BoardMPU6050.h"
 #include "inv_mpu.h"
+#include "BoardBMP180.h"
 
 #endif
 

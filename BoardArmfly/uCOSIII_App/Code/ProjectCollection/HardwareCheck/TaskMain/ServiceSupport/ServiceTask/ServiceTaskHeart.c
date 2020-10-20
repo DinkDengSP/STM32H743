@@ -3,7 +3,7 @@
 **Author: DengXiaoJun
 **Date: 2020-10-13 22:43:17
 **LastEditors: ,: DengXiaoJun
-**LastEditTime: ,: 2020-10-19 23:50:26
+**LastEditTime: ,: 2020-10-20 21:16:18
 **FilePath: ,: \ProjectFilesd:\DinkGitHub\STM32H743\BoardArmfly\uCOSIII_App\Code\ProjectCollection\HardwareCheck\TaskMain\ServiceSupport\ServiceTask\ServiceTaskHeart.c
 **ModifyRecord1:    
 ******************************************************************/
@@ -59,6 +59,24 @@ void ServiceHeartUtilShowMPU6050Dmp(void)
     SystemPrintf("pitch: %f, roll: %f, yaw: %f\r\n",pitch,roll,yaw);
 }
 
+//显示BMP180大气压数据
+void ServiceHeartUtilShowBmp180Data(void)
+{
+    D_ERR errorCode = D_ERR_NONE;
+    float temp = 0.0;
+    uint32_t press = 0;
+    errorCode = BoardBmp180_ReadTempPress(&temp,&press);
+    if(errorCode != D_ERR_NONE)
+    {
+        SystemPrintf("BoardBmp180_ReadTempPress Failed,ErrorCode = 0X%08X\r\n",errorCode);
+        return;
+    }
+    else
+    {
+        SystemPrintf("BoardBmp180_ReadTempPress,Temp : %0.3f, press = %d\r\n",temp,press);
+    }
+}
+
 //任务函数
 void ServiceTaskFuncHeart(void *p_arg)
 {
@@ -66,7 +84,8 @@ void ServiceTaskFuncHeart(void *p_arg)
     while(1)
     {
         BoardLedToogle(BOARD_LED3_W25Q128);
-        CoreDelayMs(250);
+        CoreDelayMs(500);
         ServiceHeartUtilShowMPU6050Dmp();
+        ServiceHeartUtilShowBmp180Data();
     }
 }
